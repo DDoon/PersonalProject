@@ -53,11 +53,13 @@ export default {
   methods: {
     ...mapActions(["fetchProduct", "fetchProductCommentList"]),
     onSubmit(payload) {
-      const { comment, writer, file } = payload
+      const { comment, writer, file, rating } = payload
       let formData = new FormData()
       formData.append("comment", comment)
       formData.append("writer", writer)
       formData.append("file", file)
+      formData.append("rating", rating)
+
       console.log(formData)
       axios
         .post(

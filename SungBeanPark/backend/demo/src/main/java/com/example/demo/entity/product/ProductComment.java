@@ -28,6 +28,9 @@ public class ProductComment {
     private String comment;
 
     @Column
+    private Long rating ;
+
+    @Column
     private String fileName;
 
     @CreatedDate

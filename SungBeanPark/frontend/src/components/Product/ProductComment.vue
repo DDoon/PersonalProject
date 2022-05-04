@@ -12,7 +12,86 @@
           <header class="product-section-header">
             <h1 class="title">리뷰</h1>
           </header>
+          <div>
+            <h3>{{ productComments.length }}</h3>
+          </div>
 
+          <div class="review-scoreboard">
+            <div class="score-summary">
+              <strong class="average-score" aria-label="평점 4.8"> 4.8 </strong>
+              <div class="star-rating">
+                <star-rating
+                  :inline="true"
+                  :read-only="true"
+                  :show-rating="false"
+                  :star-size="20"
+                  v-model="totalrate"
+                  :incremane="0.1"
+                  active-color="#fee500"
+                ></star-rating>
+              </div>
+            </div>
+
+            <div class="score-detail">
+              <dl class="score-stats-list">
+                <div class="score-stats-item is-active">
+                  <dt>5점</dt>
+                  <dd>
+                    <div class="bar-graph" aria-hidden>
+                      <div
+                        class="active-bar"
+                        style="width: 82.5088339223%"
+                      ></div>
+                    </div>
+                    <strong class="count" aria-label="467명">467</strong>
+                  </dd>
+                </div>
+
+                <div class="score-stats-item">
+                  <dt>4점</dt>
+                  <dd>
+                    <div class="bar-graph" aria-hidden>
+                      <div
+                        class="active-bar"
+                        style="width: 15.371024735%"
+                      ></div>
+                    </div>
+                    <strong class="count" aria-label="87명">87</strong>
+                  </dd>
+                </div>
+
+                <div class="score-stats-item">
+                  <dt>3점</dt>
+                  <dd>
+                    <div class="bar-graph" aria-hidden>
+                      <div class="active-bar" style="width: 2.296819788%"></div>
+                    </div>
+                    <strong class="count" aria-label="13명">13</strong>
+                  </dd>
+                </div>
+
+                <div class="score-stats-item">
+                  <dt>2점</dt>
+                  <dd>
+                    <div class="bar-graph" aria-hidden>
+                      <div class="active-bar"></div>
+                    </div>
+                    <strong class="count" aria-label="0명">1</strong>
+                  </dd>
+                </div>
+
+                <div class="score-stats-item">
+                  <dt>1점</dt>
+                  <dd>
+                    <div class="bar-graph" aria-hidden>
+                      <div class="active-bar"></div>
+                    </div>
+                    <strong class="count" aria-label="0명">1</strong>
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
           <form>
             <div
               v-for="commenList in paginatedData"
@@ -40,11 +119,11 @@
                             class="star-rating-13"
                             aria-label="5.0점 / 5.0점"
                           >
-                            <i class="ic-star is-active"></i>
-                            <i class="ic-star is-active"></i>
-                            <i class="ic-star is-active"></i>
-                            <i class="ic-star"></i>
-                            <i class="ic-star"></i>
+                            <i
+                              v-for="(commentList, idx) in commenList.rating"
+                              :key="idx"
+                              class="ic-star"
+                            ></i>
                           </div>
                           <div class="misc">
                             {{ commenList.regDate }}
@@ -95,13 +174,15 @@
               </ol>
             </div>
             <div class="pagination">
-              <button
-                @click="prevPage"
-                class="page-control page-prev"
-                type="button"
-              >
-                <i class="ic-chevron"></i>
-              </button>
+              <a href="#location">
+                <button
+                  @click="prevPage"
+                  class="page-control page-prev"
+                  type="button"
+                >
+                  <i class="ic-chevron"></i>
+                </button>
+              </a>
               <ol class="page-list">
                 <li
                   class="page-item"
@@ -110,50 +191,37 @@
                   @click="setPage(n - 1)"
                   :class="{ isactive: n == pageNum + 1 }"
                 >
-                  <a>
+                  <a href="#location">
                     {{ n }}
                   </a>
                 </li>
               </ol>
-              <button
-                @click="nextPage"
-                class="page-control page-next"
-                type="button"
-              >
-                <i class="ic-chevron"></i>
-              </button>
+              <a href="#location">
+                <button
+                  @click="nextPage"
+                  class="page-control page-next"
+                  type="button"
+                >
+                  <i class="ic-chevron"></i>
+                </button>
+              </a>
             </div>
           </form>
           <div class="review-modal">
             <div class="review-modal-title">별점 평가</div>
             <div class="review-modal-star">
               <div class="review-modal-star-label">만족도</div>
-              <div class="rating-input">
-                <input id="rate5" type="radio" name="rating" />
-                <label for="rate5" class="rating-input-star">
-                  <i class="ic-star"></i>
-                </label>
-
-                <input id="rate4" type="radio" name="rating" />
-                <label for="rate4" class="rating-input-star">
-                  <i class="ic-star"></i>
-                </label>
-
-                <input id="rate3" type="radio" name="rating" />
-                <label for="rate3" class="rating-input-star">
-                  <i class="ic-star"></i>
-                </label>
-
-                <input id="rate2" type="radio" name="rating" />
-                <label for="rate2" class="rating-input-star">
-                  <i class="ic-star"></i>
-                </label>
-
-                <input id="rate1" type="radio" name="rating" />
-                <label for="rate1" class="rating-input-star">
-                  <i class="ic-star"></i>
-                </label>
-              </div>
+              <star-rating
+                v-model="rating"
+                :show-rating="false"
+                :rounded-corners="true"
+                inactive-color="#e0e2e7"
+                active-color="#fee500"
+                :star-points="[
+                  23, 2, 14, 17, 0, 19, 10, 34, 7, 50, 23, 43, 38, 50, 36, 34,
+                  46, 19, 31, 17,
+                ]"
+              ></star-rating>
             </div>
           </div>
 
@@ -220,9 +288,13 @@
   </div>
 </template>
 <script>
+import StarRating from "vue-star-rating"
 import axios from "axios"
 export default {
   name: "ProductComment",
+  components: {
+    StarRating,
+  },
   props: {
     productComments: {
       type: Array,
@@ -250,10 +322,14 @@ export default {
       files: [],
       id: "",
       pageNum: 0,
+      rating: 0,
+      toralrate: 0,
     }
   },
+
   created() {
     this.writer = this.$store.state.userInfo.id
+    this.gerRating()
   },
   methods: {
     imageDelete() {
@@ -285,10 +361,10 @@ export default {
         })
     },
     onSubmit() {
-      const { comment, writer } = this
+      const { comment, writer, rating } = this
       const file = this.$refs.files.files[0]
-      this.$emit("submit", { comment, writer, file })
-      console.log(comment, writer, file)
+      this.$emit("submit", { comment, writer, file, rating })
+      console.log(comment, writer, file, rating)
     },
     onLike() {
       if (this.userInfo != null) {
