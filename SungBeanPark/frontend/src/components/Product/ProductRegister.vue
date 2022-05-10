@@ -1,44 +1,52 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-4">
-        <form enctype="multipart/form-data" @submit.prevent="onSubmit">
-          <div>
-            <input
-              type="file"
-              id="files"
-              ref="files"
-              multiple
-              v-on:change="handlerFileUpload()"
-            />
-          </div>
-          <div>
-            <img class="preview" :src="image" alt="" />
-          </div>
-          <div v-if="image == ''">이미지 미리보기</div>
-          <table>
-            <tr>
-              <td>상품명</td>
-              <input v-model="productName" type="text" />
+  <div class="product-register">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <form enctype="multipart/form-data" @submit.prevent="onSubmit">
+            <header class="product-register-header">
+              <h2 class="title">상품등록</h2>
+            </header>
 
-              <td>상품가</td>
-              <input v-model="productPrice" type="number" />
+            <table class="product-register-table">
+              <div class="product-register-name">
+                <label for="">상품명</label>
+                <input v-model="productName" type="text" />
+              </div>
+              <div class="product-register-price">
+                <label for="">상품가</label>
+                <input v-model="productPrice" type="number" />
+              </div>
+              <div class="product-register-gender">
+                <label for="">남여전용</label>
+                <input v-model="gender" type="text" />
+              </div>
 
-              <td>남여전용</td>
-              <input v-model="gender" type="text" />
+              <div class="product-register-discount">
+                <label for="">할인율</label>
+                <input v-model="discount" type="number" />
+              </div>
+              <div class="product-register-rating">
+                <label for="">별점수</label>
+                <input v-model="rating" type="number" />
+              </div>
 
-              <td>할인된 가격</td>
-              <input v-model="productDiscountPrice" type="number" />
-
-              <td>할인율</td>
-              <input v-model="discount" type="number" />
-
-              <td>별점수</td>
-              <input v-model="rating" type="number" />
-            </tr>
-            <button type="submit">등록하기</button>
-          </table>
-        </form>
+              <button class="btn-black btn-46" type="submit">등록하기</button>
+            </table>
+            <div>
+              <input
+                type="file"
+                id="files"
+                ref="files"
+                multiple
+                v-on:change="handlerFileUpload()"
+              />
+              <div>
+                <img class="preview" :src="image" alt="" />
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -93,4 +101,6 @@ export default {
   },
 }
 </script>
-<style></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/components/product-register";
+</style>

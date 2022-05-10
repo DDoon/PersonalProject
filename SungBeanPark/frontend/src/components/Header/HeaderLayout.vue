@@ -19,7 +19,11 @@
                     <li class="gnb-nav-item is-active">
                       <a href="/">New Release</a>
                     </li>
-                    <li class="gnb-nav-item"><a href="/">Men</a></li>
+                    <li class="gnb-nav-item">
+                      <router-link :to="{ name: 'ProductPage' }"
+                        >Men</router-link
+                      >
+                    </li>
                     <li class="gnb-nav-item"><a href="/">Women</a></li>
                   </ul>
                 </nav>
@@ -35,7 +39,7 @@
 
               <div class="gnb-right">
                 <div class="input-group lg-only">
-                  <i class="ic-search" aria-hidden></i>
+                  <i class="ic-search" aria-hidden="true"></i>
                   <input class="form-input" type="text" placeholder="Search" />
                 </div>
 
@@ -78,27 +82,16 @@
                     <div class="my-menu-content is-active">
                       <ul class="my-menu-list">
                         <li class="my-menu-item">
-                          <router-link :to="{ name: 'MyPage' }"
+                          <router-link :to="{ name: 'MemberInfoPage' }"
                             >마이페이지</router-link
                           >
                         </li>
-
-                        <li
-                          class="my-menu-item"
-                          v-if="
-                            this.cookie === true && this.individual != '사용자'
-                          "
-                        >
+                        <li class="my-menu-item">
                           <router-link :to="{ name: 'MemberListPage' }"
                             >회원관리</router-link
                           >
                         </li>
-                        <li
-                          class="my-menu-item"
-                          v-if="
-                            this.cookie === true && this.individual != '사용자'
-                          "
-                        >
+                        <li class="my-menu-item">
                           <router-link :to="{ name: 'ProductRegisterPage' }"
                             >상품관리</router-link
                           >
@@ -134,8 +127,12 @@
           <div class="sidebar-user-menu">
             <ul class="user-menu-list">
               <li class="user-menu-item"><a href="/">Best</a></li>
-              <li class="user-menu-item"><a href="/">New Release</a></li>
-              <li class="user-menu-item"><a href="/">Men</a></li>
+              <li class="user-menu-item">
+                <a href="/">New Release</a>
+              </li>
+              <li class="user-menu-item">
+                <router-link :to="{ name: 'ProductPage' }">Men</router-link>
+              </li>
               <li class="user-menu-item"><a href="/">Women</a></li>
               <!-- 로그인을 하지 않은 경우 -->
               <li class="user-menu-item" v-if="checkUser == null">
@@ -152,9 +149,10 @@
         </nav>
       </header>
     </aside>
+
     <div
       class="overlay sm-only"
-      aria-hidden
+      aria-hidden="true"
       :class="{ active: isActive }"
       @click="test2"
     ></div>
@@ -169,10 +167,11 @@ export default {
     return {
       isActive: false,
       cookie: this.$cookies.isKey("user"),
-      individual: this.$cookies.get("auth"),
+
       checkUser: window.localStorage.getItem("token"),
     }
   },
+
   methods: {
     test() {
       this.isActive = !this.isActive
@@ -180,9 +179,14 @@ export default {
     test2() {
       this.isActive = !this.isActive
     },
+
     mymenumodal() {
       this.isActive = !this.isActive
     },
+    submenuDrop() {
+      this.isOpen = true
+    },
+
     logout() {
       this.$cookies.remove("user")
       this.isLogin = false

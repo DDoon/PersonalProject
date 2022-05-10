@@ -3,7 +3,7 @@
     <header class="sidebar-header">
       <h1 class="logo">
         <a href="/">
-          <img src="@/assets/images/Logo.svg" alt="나이키" />
+          <img src="@/assets/image/Logo.svg" alt="나이키" />
         </a>
       </h1>
 
@@ -25,12 +25,10 @@
   </aside>
 </template>
 <script>
-/* eslint-disable */
 export default {
   name: "SidebarLayout",
 }
 </script>
 <style lang="scss" scoped>
 @import "~@/assets/scss/layout/sidebar";
-@import "~@/assets/scss/components/overlay";
 </style>
