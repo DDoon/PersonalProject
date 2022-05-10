@@ -54,8 +54,9 @@ public class Product {
     @Column
     private String filePath;
 
+
     @Column(length = 32)
-    private String rating;
+    private Long rating;
 
 
     @CreationTimestamp
