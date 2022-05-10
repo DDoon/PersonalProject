@@ -9,8 +9,7 @@ import com.example.demo.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +29,9 @@ public class MemberController {
         log.info("MemberRegister():" +
                 memberRequest.getId() + ", " +
                 memberRequest.getUserName() + ", " +
-                memberRequest.getPw());
+                memberRequest.getPw() + "," + memberRequest.getAuth());
         return memberService.register(memberRequest);
     }
-
-
 
 
     @PostMapping("/login")
@@ -44,9 +41,9 @@ public class MemberController {
         MemberRequest memberResponse = memberService.login(memberRequest);
 
         if(memberResponse != null) {
-            log.info("성공좀!");
+            log.info("성공!");
         }else{
-            log.info("그만실패좀!");
+            log.info("실패!");
         }
 
         return memberResponse;

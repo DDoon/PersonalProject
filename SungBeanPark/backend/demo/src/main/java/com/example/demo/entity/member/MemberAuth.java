@@ -4,6 +4,7 @@ package com.example.demo.entity.member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,8 +20,10 @@ public class MemberAuth {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long memberAuthNo;
 
-    @Column(name = "member_no")
-    private Long member;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_no")
+    @JsonIgnore
+    private Member member;
 
     @Column(length = 64, nullable = false)
     private String auth;

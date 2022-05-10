@@ -3,6 +3,7 @@ package com.example.demo.entity.member;
 import com.example.demo.entity.Cart.Cart;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@ToString
 @Table(name = "member")
 public class Member {
     @Id
@@ -47,7 +49,7 @@ public class Member {
         this.userName = userName;
     }
 
-    public void addAuth (MemberAuth auth) {
+    public void addAuth(MemberAuth auth) {
         if (authList == null) {
             authList = new ArrayList();
         }

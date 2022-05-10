@@ -18,11 +18,12 @@ public class MemberRequest {
     private String auth;
 
 
-    public MemberRequest(Long memberNo, String id, String pw, String userName) {
+    public MemberRequest(Long memberNo, String id, String pw, String userName, String auth) {
         this.memberNo = memberNo;
         this.id = id;
         this.pw = pw;
         this.userName = userName;
         this.auth = auth;
     }
+
 }

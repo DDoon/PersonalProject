@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.controller.request.MemberRequest;
 import com.example.demo.entity.member.Member;
+import com.example.demo.entity.member.MemberAuth;
 import com.example.demo.repository.MemberAuthRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.cart.CartRepository;
@@ -10,16 +11,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
-@Repository
 public class MemberServiceImpl implements MemberService {
 
     @Autowired
@@ -34,6 +34,7 @@ public class MemberServiceImpl implements MemberService {
     private PasswordEncoder passwordEncoder;
 
 
+    @Transactional
     @Override
     public Member register(MemberRequest memberRequest) {
         Optional<Member> maybeMember = memberRepository.findByUserId(memberRequest.getId());
@@ -45,43 +46,61 @@ public class MemberServiceImpl implements MemberService {
             String encodedPassword = passwordEncoder.encode(memberRequest.getPw());
             memberRequest.setPw(encodedPassword);
 
+            MemberAuth authEntity = new MemberAuth(memberRequest.getAuth());
+
             Member memberEntity = new Member(
                     memberRequest.getId(),
                     memberRequest.getPw(),
                     memberRequest.getUserName()
                     );
+
             memberRepository.save(memberEntity);
+
+            memberEntity.addAuth(authEntity);
+
+
             return memberEntity;
         }
     }
 
+    @Transactional
     @Override
     public MemberRequest login(MemberRequest memberRequest) {
         Optional<Member> maybeMember = memberRepository.findByUserId(memberRequest.getId());
 
         if(maybeMember.equals(Optional.empty())) {
-            log.info("아이디읎당");
+            log.info("아이디 없음");
             return null;
         }
 
         Member loginMember = maybeMember.get();
 
+
+
         if(!passwordEncoder.matches(memberRequest.getPw(), loginMember.getPassword())) {
-            log.info("헤이 패스워드 노노");
+            log.info("패스워드가 일치하지 않음");
             return null;
         }
 
+        Optional<MemberAuth> maybeMemberAuth = memberAuthRepository.findByMemberNo(loginMember.getMemberNo());
+
+        if(maybeMemberAuth == null) {
+            log.info("no auth");
+            return null;
+        }
+
+        MemberAuth memberAuth = maybeMemberAuth.get();
 
         if(loginMember.getId().equals(memberRequest.getId())){
             memberRequest.setUserName(loginMember.getUserName());
             memberRequest.setMemberNo(loginMember.getMemberNo());
-
+            memberRequest.setAuth(memberAuth.getAuth());
         }
 
         MemberRequest response = new MemberRequest(
-                memberRequest.getMemberNo(),memberRequest.getId(), memberRequest.getUserName(), memberRequest.getAuth());
+                memberRequest.getMemberNo(), memberRequest.getId(),null, memberRequest.getUserName(), memberRequest.getAuth());
         log.info("info response" + response);
-        return memberRequest;
+        return response;
     }
 
     @Override
