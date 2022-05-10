@@ -1,0 +1,47 @@
+.memberlist {
+  $table-cell-padding: 12px;
+  $table-th-width-sm: 100px;
+  $table-th-width-md: 140px + $table-cell-padding;
+  padding-top: 40px;
+  h2 {
+    @include text-style(24, $black);
+    padding: 8px 0;
+  }
+  &-table {
+    width: 100%;
+    margin-top: 8px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid $border;
+
+    tr {
+      @include text-style(12, $primary);
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid $border;
+    }
+    th,
+    td {
+      padding: $table-cell-padding;
+    }
+
+    th {
+      width: $table-th-width-sm + $table-cell-padding;
+      font-weight: 700;
+      color: $primary;
+    }
+
+    td {
+      padding-left: 0;
+    }
+  }
+  @include responsive(T) {
+    tr {
+      @include text-style(14);
+    }
+
+    th {
+      width: $table-th-width-md + $table-cell-padding;
+    }
+  }
+}

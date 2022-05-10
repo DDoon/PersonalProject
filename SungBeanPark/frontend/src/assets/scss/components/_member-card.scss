@@ -1,0 +1,15 @@
+.member {
+  position: relative;
+
+  padding-top: 40px;
+  width: 100%;
+
+  &-card {
+    @include flexbox(center);
+    width: 320px;
+    border-radius: 4px;
+    li {
+      margin-bottom: 16px;
+    }
+  }
+}

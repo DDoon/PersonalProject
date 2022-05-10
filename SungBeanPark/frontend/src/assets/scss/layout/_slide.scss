@@ -1,0 +1,13 @@
+.slide {
+  &-section {
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    &.sm-hidden {
+      padding-top: 32px;
+    }
+  }
+}
