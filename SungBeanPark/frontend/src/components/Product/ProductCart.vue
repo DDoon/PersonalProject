@@ -7,19 +7,37 @@
             <div class="cart-content-header">
               <div class="cart-content-header left">
                 <label for="">
-                  <input
-                    type="checkbox"
-                    v-model="allChecked"
-                    @click="checkedAll($event.target.checked)"
-                  />
+                  <input type="checkbox" v-model="select_all" @click="select" />
                 </label>
                 <span>모두 선택</span>
               </div>
 
               <span class="cart-content-header right">
-                <button class="cart-content-hedaer delete">선택삭제</button>
+                <button
+                  class="cart-content-hedaer delete"
+                  @click="onDeleteProduct(cart.cartNo)"
+                  aria-label="선택 삭제"
+                >
+                  선택삭제
+                </button>
               </span>
             </div>
+          </div>
+          <div
+            class="cart-content-nocart"
+            v-if="
+              !cartList || (Array.isArray(cartList) && cartList.length === 0)
+            "
+          >
+            <i class="ic-cart"> </i>
+          </div>
+          <div
+            class="cart-content-nocart-memo"
+            v-if="
+              !cartList || (Array.isArray(cartList) && cartList.length === 0)
+            "
+          >
+            <strong>"장바구니가 비어 있습니다"</strong>
           </div>
           <ul class="cart-content-list">
             <li
@@ -34,23 +52,29 @@
                       <div>
                         <div class="product-small-card select">
                           <input
-                            :value="product.productId"
-                            v-model="product.selected"
-                            @change="selected($event)"
                             type="checkbox"
+                            :value="product.productId"
+                            v-model="selected"
                           />
                         </div>
                         <div class="product-small-card">
                           <a class="product-small-item" href="/">
                             <div class="product-small-img">
                               <picture class="product-small-item picture">
-                                <img
-                                  v-if="product.fileName != null"
-                                  :src="
-                                    require(`@/assets/image/${product.fileName}`)
-                                  "
-                                  alt=""
-                                />
+                                <router-link
+                                  :to="{
+                                    name: 'ProductDetailPage',
+                                    params: { productId: product.productId },
+                                  }"
+                                >
+                                  <img
+                                    v-if="product.fileName != null"
+                                    :src="
+                                      require(`@/assets/image/${product.fileName}`)
+                                    "
+                                    alt=""
+                                  />
+                                </router-link>
                               </picture>
                             </div>
                             <div class="product-small-item content">
@@ -62,8 +86,9 @@
                           <button
                             class="product-small-delete"
                             @click="onDeleteProduct(cartList[0].cart[0].cartNo)"
+                            aria-label="상품삭제"
                           >
-                            <i class="ic-close"></i>
+                            <i class="ic-close" aria-hidden="true"></i>
                           </button>
                         </div>
 
@@ -80,25 +105,25 @@
                                     type="button"
                                     aria-label="해당 상품을 삭제하기"
                                   >
-                                    <i class="ic-close" aria-hidden></i>
+                                    <i class="ic-close" aria-hidden="true"></i>
                                   </button>
                                 </header>
 
                                 <div class="checkout-footer">
                                   <div class="checkout-select">
                                     <select id="checkout-item-1">
-                                      <option value="1"></option>
-                                      <option value="2"></option>
-                                      <option value="3"></option>
-                                      <option value="4"></option>
-                                      <option value="5"></option>
-                                      <option value="6"></option>
-                                      <option value="7"></option>
-                                      <option value="8"></option>
-                                      <option value="9"></option>
+                                      <option
+                                        v-for="quantity in 10"
+                                        :key="quantity"
+                                      >
+                                        {{ quantity }}
+                                      </option>
                                     </select>
                                     <span>
-                                      <i class="ic-caret" aria-hidden></i>
+                                      <i
+                                        class="ic-caret"
+                                        aria-hidden="true"
+                                      ></i>
                                     </span>
                                   </div>
 
@@ -108,8 +133,7 @@
                                   >
                                     <div class="price">
                                       <strong class="price">{{
-                                        product.productDiscountPrice
-                                          | pricePoint
+                                        product.productPrice | pricePoint
                                       }}</strong>
                                     </div>
                                   </output>
@@ -135,8 +159,7 @@
                             </button>
                           </span>
                           <strong class="price">{{
-                            (product.productPrice * product.productNum)
-                              | pricePoint
+                            product.productPrice | pricePoint
                           }}</strong>
                         </div>
                       </div>
@@ -203,7 +226,9 @@ export default {
   },
   data() {
     return {
-      allChecked: false,
+      select_all: false,
+      selected: [],
+      quantity: 1,
     }
   },
 
@@ -249,11 +274,8 @@ export default {
   },
   methods: {
     onDeleteProduct(cartNo) {
-      console.log(cartNo)
       axios
-        .delete(`http://localhost:8888/cart/cartRemove/${cartNo}`, {
-          cartNo,
-        })
+        .delete(`http://localhost:8888/cart/cartRemove/${cartNo}`)
         .then(() => {
           alert("삭제되었습니다.")
           this.$router.go()
@@ -261,6 +283,14 @@ export default {
         .catch(() => {
           alert("삭제요청실패")
         })
+    },
+    select() {
+      this.selected = []
+      if (!this.select_all) {
+        for (let i in this.cartList) {
+          this.selected.push(this.cartList[i].productId)
+        }
+      }
     },
   },
 }
