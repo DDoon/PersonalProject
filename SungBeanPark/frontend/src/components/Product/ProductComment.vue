@@ -10,88 +10,83 @@
           role="tabpanel"
         >
           <header class="product-section-header">
-            <h1 class="title">리뷰</h1>
+            <h2 class="title">리뷰 {{ productComments.length }}</h2>
           </header>
-          <div>
-            <h3>{{ productComments.length }}</h3>
-          </div>
 
           <div class="review-scoreboard">
             <div class="score-summary">
-              <strong class="average-score" aria-label="평점 4.8"> 4.8 </strong>
+              <strong class="average-score"></strong>
               <div class="star-rating">
                 <star-rating
                   :inline="true"
                   :read-only="true"
-                  :show-rating="false"
-                  :star-size="20"
-                  v-model="totalrate"
+                  :star-size="30"
+                  :v-model="totalrate"
                   :incremane="0.1"
                   active-color="#fee500"
+                  :star-points="[
+                    23, 2, 14, 17, 0, 19, 10, 34, 7, 50, 23, 43, 38, 50, 36, 34,
+                    46, 19, 31, 17,
+                  ]"
                 ></star-rating>
               </div>
             </div>
 
             <div class="score-detail">
               <dl class="score-stats-list">
-                <div class="score-stats-item is-active">
+                <div class="score-stats-item">
                   <dt>5점</dt>
                   <dd>
-                    <div class="bar-graph" aria-hidden>
-                      <div
-                        class="active-bar"
-                        style="width: 82.5088339223%"
-                      ></div>
+                    <div class="bar-graph" aria-hidden="true">
+                      <div class="active-bar" style="width: 0%"></div>
                     </div>
-                    <strong class="count" aria-label="467명">467</strong>
+                    <strong class="count"></strong>
                   </dd>
                 </div>
 
                 <div class="score-stats-item">
                   <dt>4점</dt>
                   <dd>
-                    <div class="bar-graph" aria-hidden>
-                      <div
-                        class="active-bar"
-                        style="width: 15.371024735%"
-                      ></div>
+                    <div class="bar-graph" aria-hidden="true">
+                      <div class="active-bar" style="width: 0%"></div>
                     </div>
-                    <strong class="count" aria-label="87명">87</strong>
+                    <strong class="count"></strong>
                   </dd>
                 </div>
 
                 <div class="score-stats-item">
                   <dt>3점</dt>
                   <dd>
-                    <div class="bar-graph" aria-hidden>
-                      <div class="active-bar" style="width: 2.296819788%"></div>
+                    <div class="bar-graph" aria-hidden="true">
+                      <div class="active-bar" style="width: 0%"></div>
                     </div>
-                    <strong class="count" aria-label="13명">13</strong>
+                    <strong class="count"></strong>
                   </dd>
                 </div>
 
                 <div class="score-stats-item">
                   <dt>2점</dt>
                   <dd>
-                    <div class="bar-graph" aria-hidden>
-                      <div class="active-bar"></div>
+                    <div class="bar-graph" aria-hidden="true">
+                      <div class="active-bar" style="width: 0%"></div>
                     </div>
-                    <strong class="count" aria-label="0명">1</strong>
+                    <strong class="count"></strong>
                   </dd>
                 </div>
 
                 <div class="score-stats-item">
                   <dt>1점</dt>
                   <dd>
-                    <div class="bar-graph" aria-hidden>
-                      <div class="active-bar"></div>
+                    <div class="bar-graph" aria-hidden="true">
+                      <div class="active-bar" style="width: 0%"></div>
                     </div>
-                    <strong class="count" aria-label="0명">1</strong>
+                    <strong class="count"></strong>
                   </dd>
                 </div>
               </dl>
             </div>
           </div>
+
           <form>
             <div
               v-for="commenList in paginatedData"
@@ -119,11 +114,19 @@
                             class="star-rating-13"
                             aria-label="5.0점 / 5.0점"
                           >
-                            <i
-                              v-for="(commentList, idx) in commenList.rating"
-                              :key="idx"
-                              class="ic-star"
-                            ></i>
+                            <star-rating
+                              :inline="true"
+                              :read-only="true"
+                              :star-size="10"
+                              :show-rating="false"
+                              v-model="commenList.rating"
+                              :incremane="0.1"
+                              active-color="#fee500"
+                              :star-points="[
+                                23, 2, 14, 17, 0, 19, 10, 34, 7, 50, 23, 43, 38,
+                                50, 36, 34, 46, 19, 31, 17,
+                              ]"
+                            ></star-rating>
                           </div>
                           <div class="misc">
                             {{ commenList.regDate }}
@@ -149,38 +152,53 @@
                     </div>
 
                     <footer class="review-card-footer">
+                      <!-- <button
+                        @click="onLike(commenList.commentNo)"
+                        class="btn-outlined btn-42"
+                        type="button"
+                        aria-label="좋아요 버튼"
+                      >
+                        도움이 돼요
+                      </button> -->
                       <button
-                        @click="onLike"
+                        @click="onLike(commenList.commentNo)"
                         class="btn-black btn-42"
                         type="button"
+                        aria-label="좋아요 버튼"
                       >
-                        <i class="ic-check" aria-hidden></i>
+                        <i class="ic-check" aria-hidden="true"></i>
                         도움됨
                       </button>
                       <p>
-                        <strong><span></span>1명</strong>에게 도움이 되었습니다.
+                        <strong
+                          ><span> {{ commenList.likes.length }}명</span></strong
+                        >에게 도움이 되었습니다.
                       </p>
                     </footer>
                     <button
+                      v-if="auth == '관리자' || commenList.writer == userName"
                       @click="onDelete(commenList.commentNo)"
                       class="delete-button"
                       type="button"
                       aria-label="해당 리뷰 삭제하기"
                     >
-                      <i class="ic-close" aria-hidden></i>
+                      <i class="ic-close" aria-hidden="true"></i>
                     </button>
                   </article>
                 </li>
               </ol>
             </div>
+
             <div class="pagination">
               <a href="#location">
                 <button
-                  @click="prevPage"
                   class="page-control page-prev"
+                  :class="{ active: pageNum + 1 === firstPage }"
+                  @click="prevPage"
                   type="button"
+                  aria-label="이전페이지로 이동"
                 >
-                  <i class="ic-chevron"></i>
+                  <i class="ic-chevron" aria-hidden="true"></i>
                 </button>
               </a>
               <ol class="page-list">
@@ -196,17 +214,21 @@
                   </a>
                 </li>
               </ol>
+
               <a href="#location">
                 <button
+                  :class="{ active: pageNum + 1 === lastPage }"
                   @click="nextPage"
                   class="page-control page-next"
                   type="button"
+                  aria-label="다음페이지로 이동"
                 >
-                  <i class="ic-chevron"></i>
+                  <i class="ic-chevron" aria-hidden="true"></i>
                 </button>
               </a>
             </div>
           </form>
+
           <div class="review-modal">
             <div class="review-modal-title">별점 평가</div>
             <div class="review-modal-star">
@@ -241,7 +263,7 @@
                   type="button"
                   aria-label="첨부 파일 삭제하기"
                 >
-                  <i class="ic-close" aria-hidden></i>
+                  <i class="ic-close" aria-hidden="true"></i>
                 </button>
               </div>
               <input
@@ -303,11 +325,6 @@ export default {
       type: Array,
       required: true,
     },
-    pageSize: {
-      type: Number,
-      required: false,
-      default: 3,
-    },
   },
   data() {
     return {
@@ -321,15 +338,25 @@ export default {
       writer: "",
       files: [],
       id: "",
-      pageNum: 0,
+      totalrate: 0,
       rating: 0,
-      toralrate: 0,
+
+      pageNum: 0,
+      pageSize: 3, // listSize라고 생각하자
+      firstPage: 1,
+      lastPage: 0,
+
+      auth: "",
     }
   },
 
   created() {
+    if (this.$store.state.userInfo != null) {
+      this.userName = this.$store.state.userInfo.userName
+      this.auth = this.userInfo.auth
+    }
     this.writer = this.$store.state.userInfo.id
-    this.gerRating()
+    this.commentNo = this.productComments.commentNo
   },
   methods: {
     imageDelete() {
@@ -366,11 +393,16 @@ export default {
       this.$emit("submit", { comment, writer, file, rating })
       console.log(comment, writer, file, rating)
     },
-    onLike() {
+    onLike(commentNo) {
       if (this.userInfo != null) {
-        const { commentNo, id } = this
         axios
-          .post(`http://localhost:8888/product/like/${commentNo}`, { id })
+          .post(
+            `http://localhost:8888/like/${commentNo}/${this.userInfo.memberNo}`,
+            {
+              commentNo,
+              memberNo: this.userInfo.memberNo,
+            }
+          )
           .then((res) => {
             if (res.data) {
               alert("좋아요 성공")

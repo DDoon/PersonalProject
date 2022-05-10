@@ -9,6 +9,7 @@ import {
   FETCH_MANAGER_LIST,
   FETCH_MANAGERAUTH_LIST,
   FETCH_CART_LIST,
+  FETCH_LIKE_LIST,
 } from "./mutation-types"
 
 import axios from "axios"
@@ -63,11 +64,17 @@ export default {
       })
   },
   fetchCartList({ commit }, memberNo) {
-    console.log("memberNo =" + memberNo)
     return axios
       .get(`http://localhost:8888/cart/cartList/${memberNo}`)
       .then((res) => {
         commit(FETCH_CART_LIST, res.data)
+      })
+  },
+  fetchLikeList({ commit }, commentNo, memberNo) {
+    return axios
+      .get(`http://localhost:8888//like/list/${commentNo}/${memberNo}`)
+      .then((res) => {
+        commit(FETCH_LIKE_LIST, res.data)
       })
   },
 }

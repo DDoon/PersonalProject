@@ -16,6 +16,10 @@
     width: 26px;
     border: 1px solid $border;
 
+    &.active {
+      display: none;
+    }
+
     &.page-prev {
       margin-right: 24px;
 

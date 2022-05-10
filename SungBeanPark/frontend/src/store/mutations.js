@@ -9,6 +9,7 @@ import {
   FETCH_MANAGER_LIST,
   FETCH_MANAGERAUTH_LIST,
   FETCH_CART_LIST,
+  FETCH_LIKE_LIST,
   FETCH_AUTH_LIST,
 } from "./mutation-types"
 
@@ -45,5 +46,8 @@ export default {
   },
   [FETCH_CART_LIST](state, cartList) {
     state.cartList = cartList
+  },
+  [FETCH_LIKE_LIST](state, likeList) {
+    state.likeList = likeList
   },
 }
