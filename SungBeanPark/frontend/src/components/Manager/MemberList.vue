@@ -22,7 +22,7 @@
                   !members || (Array.isArray(members) && members.length === 0)
                 "
               >
-                <td align="center" colspan="7">등록된회원없음p(ㅠ.ㅠ)q</td>
+                <td align="center" colspan="7">등록된회원없 음p(ㅠ.ㅠ)q</td>
               </tr>
               <tr v-else v-for="member in paginatedData" :key="member.memberNo">
                 <td align="center">{{ member.memberNo }}</td>
@@ -33,7 +33,7 @@
                       params: { memberNo: member.memberNo.toString() },
                     }"
                   >
-                    {{ member.userId }}
+                    {{ member.id }}
                   </router-link>
                 </td>
                 <td align="center">{{ member.userName }}</td>
@@ -124,7 +124,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~@/assets/scss/layout/member-list";
 @import "~@/assets/scss/components/pagination";
 </style>

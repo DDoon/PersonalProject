@@ -4,13 +4,13 @@
       <div class="row">
         <div class="col-sm-4">
           <header class="member-header">
-            <h2>{{ member.userId }}님의 정보</h2>
+            <h2>{{ member.id }}님의 정보</h2>
           </header>
           <div class="member-card">
             <div class="member-card-content">
               <ul>
                 <li>No: {{ member.memberNo }}</li>
-                <li>ID: {{ member.userId }}</li>
+                <li>ID: {{ member.id }}</li>
                 <li>닉네임: {{ member.userName }}</li>
               </ul>
             </div>
@@ -33,6 +33,6 @@ export default {
   methods: {},
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~@/assets/scss/components/member-card";
 </style>

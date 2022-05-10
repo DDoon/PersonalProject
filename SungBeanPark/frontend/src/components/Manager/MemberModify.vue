@@ -8,7 +8,7 @@
       </tr>
       <tr>
         <td>아이디</td>
-        <td><input type="text" :value="member.userId" /></td>
+        <td><input type="text" :value="member.id" /></td>
       </tr>
       <tr>
         <td>이름</td>
@@ -37,8 +37,8 @@ export default {
   },
   methods: {
     onSubmit() {
-      const { userId, userName } = this
-      this.$emit("submit", { userId, userName })
+      const { id, userName } = this
+      this.$emit("submit", { id, userName })
     },
   },
 }

@@ -33,10 +33,10 @@ export default {
   methods: {
     ...mapActions(["fetchMember"]),
     onSubmit(payload) {
-      const { userId, userName } = payload
+      const { id, userName } = payload
       axios
         .put(`http://localhost:8888/Member/modify/${this.memberNo}`, {
-          userId,
+          id,
           userName,
         })
         .then((res) => {
@@ -59,4 +59,4 @@ export default {
   },
 }
 </script>
-<style lang=""></style>
+<style scoped></style>
