@@ -5,7 +5,7 @@
         <div class="col-sm-4 col-md-6 col-lg-7">
           <div class="product-carousel" role="region">
             <div class="product-carousel-slider">
-              <header class="member-header">
+              <header class="member-header" id="location">
                 <h2>{{ product.productName }}</h2>
               </header>
 
@@ -84,7 +84,7 @@
                   id="product-carousel-tab-1"
                   role="tab"
                 >
-                  <button type="button">
+                  <button type="button" aria-label="상품 1번이미지">
                     <img
                       v-if="product.fileName != null"
                       :src="require(`@/assets/image/${product.fileName}`)"
@@ -97,7 +97,7 @@
                   id="product-carousel-tab-2"
                   role="tab"
                 >
-                  <button type="button">
+                  <button type="button" aria-label="상품 2번이미지">
                     <img
                       v-if="product.fileName != null"
                       :src="require(`@/assets/image/${product.fileName}`)"
@@ -110,7 +110,7 @@
                   id="product-carousel-tab-3"
                   role="tab"
                 >
-                  <button type="button">
+                  <button type="button" aria-label="상품 3번이미지">
                     <img
                       v-if="product.fileName != null"
                       :src="require(`@/assets/image/${product.fileName}`)"
@@ -123,7 +123,7 @@
                   id="product-carousel-tab-4"
                   role="tab"
                 >
-                  <button type="button">
+                  <button type="button" aria-label="상품 4번이미지">
                     <img
                       v-if="product.fileName != null"
                       :src="require(`@/assets/image/${product.fileName}`)"
@@ -152,7 +152,7 @@
                 </div>
 
                 <p>
-                  <strong>77</strong>
+                  <strong>0</strong>
                   <span class="sm-hidden">개 리뷰</span>
                 </p>
               </div>
@@ -177,7 +177,11 @@
               <div class="info-sale-price">
                 <div class="price-20">
                   <strong class="price"
-                    >{{ product.productDiscountPrice | pricePoint }}원</strong
+                    >{{
+                      (product.productPrice -
+                        product.productPrice * (product.discount * 0.01))
+                        | pricePoint
+                    }}원</strong
                   >
                 </div>
               </div>
@@ -192,18 +196,22 @@
 
                 <div class="info-price">
                   <div class="price-off">
-                    <strong class="price">
-                      {{ product.productPrice | pricePoint }}원</strong
+                    <strong class="amount">
+                      {{ product.productPrice | pricePoint }}</strong
                     >
+                    <span class="currency">원</span>
                   </div>
 
                   <div class="info-sale-price">
                     <div class="price-32">
-                      <strong class="price">
+                      <strong class="amount">
                         {{
-                          product.productDiscountPrice | pricePoint
-                        }}원</strong
+                          (product.productPrice -
+                            product.productPrice * (product.discount * 0.01))
+                            | pricePoint
+                        }}</strong
                       >
+                      <span class="currency">원</span>
                     </div>
                   </div>
                 </div>
@@ -288,8 +296,13 @@
                 <output for="select-1 select-2">
                   <div class="price-20">
                     <strong class="amount">
-                      {{ product.productDiscountPrice | pricePoint }}원</strong
+                      {{
+                        (product.productPrice -
+                          product.productPrice * (product.discount * 0.01))
+                          | pricePoint
+                      }}</strong
                     >
+                    <span class="currency">원</span>
                   </div>
                 </output>
               </dd>
@@ -331,6 +344,7 @@ export default {
       userInfo: this.$store.state.userInfo,
 
       comment: "",
+      productComments: this.$store.state.productComments,
     }
   },
 
@@ -339,7 +353,7 @@ export default {
       if (this.userInfo != null) {
         const { productId } = this
         axios
-          .post(`http://localhost:8888/cart/addToCart/${productId}`, {
+          .post(`http://localhost:8888/cart/addToCart/${productId}/`, {
             memberNo: this.userInfo.memberNo,
           })
           .then((res) => {

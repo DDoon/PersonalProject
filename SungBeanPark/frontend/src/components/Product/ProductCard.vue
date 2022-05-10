@@ -40,12 +40,14 @@
                       <div class="product-card-price">
                         <span class="percent">{{ product.discount }}%</span>
                         <strong class="price">{{
-                          product.productPrice | pricePoint
+                          (product.productPrice -
+                            product.productPrice * (product.discount * 0.01))
+                            | pricePoint
                         }}</strong>
 
-                        <strong class="price-off">{{
-                          product.productDiscountPrice | pricePoint
-                        }}</strong>
+                        <strong class="price-off">
+                          {{ product.productPrice | pricePoint }}
+                        </strong>
                       </div>
                       <div class="product-card-subtitle">
                         <span class="only">{{ product.gender }}</span>
