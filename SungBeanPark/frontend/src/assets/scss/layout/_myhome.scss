@@ -3,6 +3,7 @@
 
   &-header {
     @include flexbox(between);
+
     &.title {
       @include text-style(24);
       font-weight: 700;
@@ -17,6 +18,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 8px;
+
     &.title {
       display: block;
       width: 100px;
@@ -26,23 +28,29 @@
       @include text-style(13, $dark);
       display: block;
     }
+
+    &.radio {
+      @include flexbox(between);
+      input {
+        width: 32px;
+      }
+    }
   }
 
-  input {
+  .input {
     width: 100%;
-    display: block;
     border: 1px solid $border;
     padding: 0 15px;
     border-radius: 4px;
     height: 40px;
   }
 
-  &-inputgroup {
-    max-width: 100%;
-    flex: 50px;
+  button {
+    margin-top: 16px;
+    width: 324px;
+  }
 
-    &-email {
-      flex: 110px;
-    }
+  @include responsive(T) {
+    padding-top: 48px;
   }
 }
