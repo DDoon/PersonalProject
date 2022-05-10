@@ -1,6 +1,8 @@
 <template>
   <div>
+    <header-layout></header-layout>
     <product-register @submit="onSubmit" />
+    <footer-layout></footer-layout>
   </div>
 </template>
 
@@ -8,10 +10,12 @@
 import ProductRegister from "@/components/Product/ProductRegister.vue"
 import { mapState, mapActions } from "vuex"
 import axios from "axios"
+import HeaderLayout from "@/components/Header/HeaderLayout.vue"
+import FooterLayout from "@/components/Footer/FooterLayout.vue"
 
 export default {
   name: "ProductRegisterPage",
-  components: { ProductRegister },
+  components: { ProductRegister, HeaderLayout, FooterLayout },
 
   computed: {
     ...mapState(["productlist"]),

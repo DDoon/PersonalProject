@@ -1,0 +1,23 @@
+.product-register {
+  &-header {
+    margin-top: 48px;
+  }
+  &-table {
+    display: inline-block;
+
+    input {
+      margin-top: 32px;
+      border: 2px solid $border;
+      border-bottom: 4px;
+    }
+    label {
+      margin-right: 32px;
+    }
+
+    button {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      width: 120px;
+    }
+  }
+}
