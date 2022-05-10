@@ -13,4 +13,5 @@ export default {
   managers: [],
   manager: null,
   auths: [],
+  likeList: [],
 }
